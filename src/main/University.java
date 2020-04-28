@@ -19,6 +19,8 @@ public class University {
         int assignedTeacher = 1;
         int studentListFlag=1;
         int studentIDFlag=1;
+        int ageValidation = 1;
+
         String anotherStudent="Y";
 
         System.out.println("*************************************************************************************************");
@@ -100,12 +102,13 @@ public class University {
 
                 case 3://Create new Student and add it to and existing class
                     assignedClass=1;
+                    ageValidation=1;
+                    studentIDFlag=1;
                     System.out.println("*********************************  NEW STUDENT  *************************************************");
                     System.out.println(".................................................................................................");
                     System.out.println("Enter the name:");
                     Scanner nameFlag = new Scanner(System.in);
                     String nameStudent = nameFlag.nextLine();
-                    int ageValidation = 1;
 
                     while (ageValidation==1) {
 
@@ -165,12 +168,14 @@ public class University {
                                 }//else
                             }
                         }
+
                     }
 
                     break;
 
                 case 4://New Class
                     anotherStudent="Y";
+                    assignedTeacher=1;
                     System.out.println("*********************************** NEW CLASS ***************************************************");
                     System.out.println(".................................................................................................");
                     System.out.println("Enter the class name:");

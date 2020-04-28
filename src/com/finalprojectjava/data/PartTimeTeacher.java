@@ -22,6 +22,7 @@ public class PartTimeTeacher extends Teacher{
     public double calculatedSalary() {
         double calculatedSalary = 0;
         calculatedSalary = getBaseSalary() * getHoursPerWeek();
+        int value = (int) calculatedSalary;
         return (calculatedSalary);
     }
 

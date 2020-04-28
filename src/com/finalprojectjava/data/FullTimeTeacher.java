@@ -25,11 +25,13 @@ public class FullTimeTeacher extends Teacher{
     public double calculatedSalary() {
         double calculatedSalary = 0;
         calculatedSalary = getBaseSalary() * 1.1 * getExperienceYears();
-        return (calculatedSalary);
+        int value = (int) calculatedSalary;
+        return (value);
     }
 
     @Override
     public String toString() {
+
         return  "Name: " + getName() +
                 "||ID: " + getId() +
                 "|| Base salary: " + getBaseSalary() +
