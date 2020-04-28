@@ -1,5 +1,6 @@
 package com.finalprojectjava.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Clase {
@@ -15,6 +16,14 @@ public class Clase {
         this.students = students;
         this.teacher = teacher;
     }
+
+    public Clase(String name, int assignedClassRoom, Teacher teacher) {
+        this.name = name;
+        this.assignedClassRoom = assignedClassRoom;
+        this.students = new ArrayList<>();
+        this.teacher = teacher;
+    }
+
 
     public String getName() {
         return name;
