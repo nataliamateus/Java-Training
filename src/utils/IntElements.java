@@ -1,11 +1,14 @@
 package utils;
 
-import com.finalprojectjava.data.*;
+import com.organization.java.data.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IntElements {
+
+    private static List <Student> studentList = new ArrayList<>();
+    private static List <Teacher> teacherList = new ArrayList<>();
 
     public static List<Teacher> intTeacherList() {
 
@@ -46,40 +49,44 @@ public class IntElements {
 
     public static List<Clase> intClassesList()
     {
-        List<Clase> clase  = new ArrayList();
+
+        studentList= intStudentList();
+        teacherList=intTeacherList();
+
+        List<Clase> claseList  = new ArrayList();
 
         List <Student> students1 = new ArrayList();
-        students1.add(intStudentList().get(2));
-        students1.add(intStudentList().get(1));
-        students1.add(intStudentList().get(0));
+        students1.add(studentList.get(2));
+        students1.add(studentList.get(1));
+        students1.add(studentList.get(0));
 
         List <Student> students2 = new ArrayList();
-        students2.add(intStudentList().get(1));
-        students2.add(intStudentList().get(3));
-        students2.add(intStudentList().get(4));
+        students2.add(studentList.get(1));
+        students2.add(studentList.get(3));
+        students2.add(studentList.get(4));
 
         List <Student> students3 = new ArrayList();
-        students3.add(intStudentList().get(3));
-        students3.add(intStudentList().get(5));
-        students3.add(intStudentList().get(6));
+        students3.add(studentList.get(3));
+        students3.add(studentList.get(5));
+        students3.add(studentList.get(6));
 
         List <Student> students4 = new ArrayList();
-        students4.add(intStudentList().get(0));
-        students4.add(intStudentList().get(4));
-        students4.add(intStudentList().get(2));
+        students4.add(studentList.get(0));
+        students4.add(studentList.get(4));
+        students4.add(studentList.get(2));
 
 
-        Clase math = new Clase("Math", 201,students1,intTeacherList().get(0));
-        Clase english = new Clase("English", 301, students2, intTeacherList().get(2));
-        Clase physics = new Clase("Physics", 401, students3, intTeacherList().get(1));
-        Clase systems = new Clase("Systems", 501, students4, intTeacherList().get(3));
+        Clase math = new Clase("Math" , 100,201, students1,teacherList.get(0));
+        Clase english = new Clase("English", 200,202, students2, teacherList.get(2));
+        Clase physics = new Clase("Physics", 300, 203,students3, teacherList.get(1));
+        Clase systems = new Clase("Systems", 400, 204, students4, teacherList.get(3));
 
-        clase.add(math);
-        clase.add(english);
-        clase.add(physics);
-        clase.add(systems);
+        claseList.add(math);
+        claseList.add(english);
+        claseList.add(physics);
+        claseList.add(systems);
 
-        return clase;
+        return claseList;
     }
 
 
