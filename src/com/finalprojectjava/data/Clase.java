@@ -63,8 +63,6 @@ public class Clase {
                 " Assigned ClassRoom: " + assignedClassRoom +
                 " Teacher: " + teacher +
                 " Students: " + students;
-
     }
-
 
 }

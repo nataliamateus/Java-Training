@@ -9,7 +9,6 @@ public class PartTimeTeacher extends Teacher{
         this.hoursPerWeek = hoursPerWeek;
     }
 
-
     public int getHoursPerWeek() {
         return hoursPerWeek;
     }
