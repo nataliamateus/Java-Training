@@ -10,6 +10,8 @@ public class IntElements {
     private static List <Student> studentList = new ArrayList<>();
     private static List <Teacher> teacherList = new ArrayList<>();
 
+
+
     public static List<Teacher> intTeacherList() {
 
         List<Teacher> teacherList = new ArrayList();
@@ -24,7 +26,6 @@ public class IntElements {
 
         return teacherList;
     }
-
 
     public static List<Student> intStudentList(){
         List<Student> students = new ArrayList();
@@ -42,16 +43,13 @@ public class IntElements {
         students.add(student5);
         students.add(student6);
         students.add(student7);
-
         return students;
-
     }
 
-    public static List<Clase> intClassesList()
-    {
+    public static List<Clase> intClassesList() {
 
         studentList= intStudentList();
-        teacherList=intTeacherList();
+        teacherList= intTeacherList();
 
         List<Clase> claseList  = new ArrayList();
 
@@ -88,6 +86,5 @@ public class IntElements {
 
         return claseList;
     }
-
 
 }

@@ -3,14 +3,15 @@ import com.organization.java.data.Clase;
 import com.organization.java.data.Student;
 import com.organization.java.data.Teacher;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Functions {
 
     public static Management management = new Management();
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MAIN MENU METHODS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,70 +66,89 @@ public class Functions {
     }
 
     //Option [3] Create new Student and add it to and existing class
-    public static void createNewStudent(){
+    public static void createNewStudent() {
         int assignedClass = 1;
         int ageValidation = 1;
         int studentIDFlag = 1;
+        int ageStudent = 1;
+        int idStudent = 0;
 
         System.out.println("Enter the full name:");
         Scanner nameFlag = new Scanner(System.in);
         String nameStudent = nameFlag.nextLine();
-
         while (ageValidation == 1) {
+            try {
+                System.out.println("Enter the age: (Only numbers)");
+                Scanner ageFlag = new Scanner(System.in);
+                ageStudent = ageFlag.nextInt();
 
-            System.out.println("Enter the age: (Only numbers)");
-            Scanner ageFlag = new Scanner(System.in);
-            int ageStudent = ageFlag.nextInt();
+                if (ageStudent == 0 || ageStudent>99 ) {
+                    System.out.println("The age should be greater than 0 and less than 99");
+                    System.out.println("........................................................................................................");
 
-            if (ageStudent <= 0) {
-                System.out.println("The age should be greater than zero");
-                ageValidation = 1;
-            } else {
-                while (studentIDFlag > 0) {
-                    System.out.println("Enter ID #: (Only numbers)");
-                    Scanner idFlag = new Scanner(System.in);
-                    int idStudent = idFlag.nextInt();
-
-                    if (getIfTheStudentIdExist(idStudent)) {
-                        System.out.println("Sorry...That ID is already taken");
-                        studentIDFlag = 1;
-                    } else {
-
-                        Student student = new Student(nameStudent, ageStudent, idStudent);
-                        System.out.println("........................................................................................................");
-                        System.out.println("New Student:");
-                        management.getStudents().add(student);
-                        System.out.println(student);
-                        System.out.println("........................................................................................................");
-                        System.out.println("CLASS LIST");
-                        System.out.println("........................................................................................................");
-                        management.getClase().forEach(clase ->
-                                System.out.println("Class ID: "+ clase.getClassId() + " ||Class name: " + clase.getName() + " ||Assigned Class room: " + clase.getAssignedClassRoom() + "||"));
-                        System.out.println("........................................................................................................");
-
-                        while (assignedClass > 0) {
-
-                            System.out.println("Please enter the CLASS ID to include the new student:");
-                            Scanner classIdFlag = new Scanner(System.in);
-                            int classId = classIdFlag.nextInt();
-
-                            if (getExistClassId(classId)) {
-                                assignNewStudentToOneClass(classId, student);
-                                getInformationRelatedWithTheSelectedClass(classId);
-                                assignedClass = 0;
-                            } else {
-                                System.out.println("Sorry...That class doesn't exist");
-                                assignedClass = 1;
-                            }
-                        }//while
-                        studentIDFlag = 0;
-                        ageValidation = 0;
-
-                    }//else
+                } else {
+                    ageValidation = 0;
                 }
-            }
 
+            } catch (InputMismatchException e) {
+                System.out.println("** Please enter a valid value **");
+                System.out.println("........................................................................................................");
+
+            }
         }
+
+        while (studentIDFlag > 0) {
+            try {
+                System.out.println("Enter ID #: (Only numbers)");
+                Scanner idFlag = new Scanner(System.in);
+                idStudent = idFlag.nextInt();
+
+                if (getIfTheStudentIdExist(idStudent)) {
+                    System.out.println("Sorry...That ID is already taken");
+                    System.out.println("........................................................................................................");
+
+                } else {
+                    studentIDFlag = 0;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("** Please enter a valid value **");
+                System.out.println("........................................................................................................");
+            }
+        }
+
+        Student student = new Student(nameStudent, ageStudent, idStudent);
+        System.out.println("........................................................................................................");
+        System.out.println("New Student:");
+        management.getStudents().add(student);
+        System.out.println(student);
+        System.out.println("........................................................................................................");
+        System.out.println("CLASS LIST");
+        System.out.println("........................................................................................................");
+        management.getClase().forEach(clase ->
+                System.out.println("Class ID: " + clase.getClassId() + " ||Class name: " + clase.getName() + " ||Assigned Class room: " + clase.getAssignedClassRoom() + "||"));
+        System.out.println("........................................................................................................");
+
+        while (assignedClass > 0) {
+          try{
+            System.out.println("Please enter the CLASS ID to include the new student:");
+            Scanner classIdFlag = new Scanner(System.in);
+            int classId = classIdFlag.nextInt();
+            if (getExistClassId(classId)) {
+                assignNewStudentToOneClass(classId, student);
+                getInformationRelatedWithTheSelectedClass(classId);
+                assignedClass = 0;
+            } else {
+                System.out.println("Sorry...That class doesn't exist");
+                System.out.println("........................................................................................................");
+                assignedClass = 1;
+            }
+          } catch(InputMismatchException e){
+              System.out.println("** Please enter a valid value **");
+              System.out.println("........................................................................................................");
+          }
+        }//while
+        studentIDFlag = 0; ageValidation = 0;
     }
 
     //Option [4] Create new Class
@@ -139,129 +159,152 @@ public class Functions {
         int classFlag = 1;
         int classIdValidate = 1;
         Clase clase = null;
-        String nameClass="";
-        int classId=0;
+        String nameClass = "";
+        int classId = 0;
+        int assignedRoom = 1;
 
-        while (classFlag>0) {
+
+        while (classFlag > 0) {
             System.out.println("Enter the class name:");
             Scanner classNameFlag = new Scanner(System.in);
             nameClass = classNameFlag.nextLine();
 
             if (getExistClass(nameClass)) {
                 System.out.println("Sorry...That class name already exist!");
+                System.out.println("........................................................................................................");
+            } else {
+                classFlag = 0;
             }
-            else
-            {
-                classFlag=0;
-            }
-
         }
 
-        while (classIdValidate>0) {
+        while (classIdValidate > 0) {
+            try {
+                System.out.println("Enter the class ID:(Only numbers)");
+                Scanner classIdFlag = new Scanner(System.in);
+                classId = classIdFlag.nextInt();
 
-            System.out.println("Enter the class ID:(Only numbers)");
-            Scanner classIdFlag = new Scanner(System.in);
-            classId = classIdFlag.nextInt();
+                if (getExistClassId(classId)) {
+                    System.out.println("Sorry...That class ID already exist!");
+                    System.out.println("........................................................................................................");
 
-            if (getExistClassId(classId)) {
-                System.out.println("Sorry...That class ID already exist!");
+                } else {
+                    classIdValidate = 0;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("** Please enter a valid value **");
+                System.out.println("........................................................................................................");
             }
-
-            else
-            {
-                classIdValidate=0;
-            }
-
         }
 
+        while (assignedRoom > 0) {
+            try {
+                System.out.println("Enter the assigned classroom: (Only numbers)");
+                Scanner roomFlag = new Scanner(System.in);
+                assignedRoom = roomFlag.nextInt();
+                assignedRoom=0;
 
-        while (assignedTeacher > 0) {
-            System.out.println("Enter the assigned classroom: (Only numbers)");
-            Scanner roomFlag = new Scanner(System.in);
-            int assignedRoom = roomFlag.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("** Please enter a valid value **");
+                System.out.println("........................................................................................................");
+            }
+        }
 
+        while (assignedTeacher > 0){
             System.out.println("Please select one teacher from List:");
             management.getTeachers().forEach(teacher -> System.out.println(teacher.toString()));
             System.out.println("........................................................................................................");
-            System.out.println("Enter the teacher ID:(Only numbers)");
-            Scanner teacherFlag = new Scanner(System.in);
-            int teacherID = teacherFlag.nextInt();
+            try {
+                System.out.println("Enter the teacher ID:(Only numbers)");
+                Scanner teacherFlag = new Scanner(System.in);
+                int teacherID = teacherFlag.nextInt();
 
-            if (getExistTeacher(teacherID)) {
-                Teacher teacher = (addTeacher(teacherID));
-                List<Student> claseStudent = new ArrayList();
-                clase = new Clase(nameClass, classId, assignedRoom, claseStudent, teacher);
-                management.getClase().add(clase);
-                assignedTeacher = 0;
-
-            } else {
-                System.out.println("** That teacher doesn't exist **");
+                if (getExistTeacher(teacherID)) {
+                    Teacher teacher = (addTeacher(teacherID));
+                    List<Student> claseStudent = new ArrayList();
+                    clase = new Clase(nameClass, classId, assignedRoom, claseStudent, teacher);
+                    management.getClase().add(clase);
+                    assignedTeacher = 0;
+                } else {
+                    System.out.println("** That teacher doesn't exist **");
+                    System.out.println("........................................................................................................");
+                }
+            }catch(InputMismatchException e){
+                System.out.println("** Please enter a valid value **");
                 System.out.println("........................................................................................................");
-                assignedTeacher = 1;
             }
+
         }
+
 
         while (anotherStudent.equals("Y") || anotherStudent.equals("y")) {
             System.out.println("........................................................................................................");
             System.out.println("STUDENT LIST");
             getStudentList(nameClass).forEach(student -> System.out.println(student.toString()));
+            try {
+                System.out.println("........................................................................................................");
+                System.out.println("Enter the Student ID from the list to include to the new class:");
+                Scanner studentFlag = new Scanner(System.in);
+                int studentIdIncluded = studentFlag.nextInt();
 
-            System.out.println("........................................................................................................");
-            System.out.println("Enter the Student ID from the list to include to the new class:");
-            Scanner studentFlag = new Scanner(System.in);
-            int studentIdIncluded = studentFlag.nextInt();
+                if (getIdStudentExist(studentIdIncluded)) {
 
-            if (getIdStudentExist(studentIdIncluded)) {
+                    if (!idStudentExistInClass(clase, studentIdIncluded)) {
+                        System.out.println("........................................................................................................");
+                        System.out.println("***Student add to the " + clase.getName() + " class***");
+                        addStudentToANewClass(clase, studentIdIncluded);
 
-                if(!idStudentExistInClass(clase,studentIdIncluded)) {
-                    System.out.println("........................................................................................................");
-                    System.out.println("***Student add to the " + clase.getName() + " class***");
-                    addStudentToANewClass(clase, studentIdIncluded);
+                        System.out.println("........................................................................................................");
+                        System.out.println("**** New Class ****:");
+                        getInformationRelatedWithTheSelectedClass(clase.getClassId());
 
-                    System.out.println("........................................................................................................");
-                    System.out.println("**** New Class ****:");
-                    getInformationRelatedWithTheSelectedClass(clase.getClassId());
-
-                    System.out.println("........................................................................................................");
-                    System.out.println("Do you want to include another student? Y/N");
-                    Scanner anotherStudentFlag = new Scanner(System.in);
-                    anotherStudent = anotherStudentFlag.nextLine();
-                    anotherStudent.toUpperCase();
+                        System.out.println("........................................................................................................");
+                        System.out.println("Do you want to include another student? Y/N");
+                        Scanner anotherStudentFlag = new Scanner(System.in);
+                        anotherStudent = anotherStudentFlag.nextLine();
+                        anotherStudent.toUpperCase();
+                    } else {
+                        System.out.println("Sorry...that student ID No. " + studentIdIncluded + " is already exist on the list");
+                    }
                 }
-                else{
-                    System.out.println("Sorry...that student ID No. " + studentIdIncluded + " is already exist on the list");
+                else {
+                    System.out.println("Sorry...that student ID No. " + studentIdIncluded + " doesn't exist");
                 }
+            }catch (InputMismatchException e){
+                System.out.println("** Please enter a valid value **");
             }
-
-            else { System.out.println("Sorry...that student ID No. " + studentIdIncluded + " doesn't exist"); }
         }//Another Student While
     }
 
     //Option [5] List all the classes in which a given student is included
     public static void listAllStudentsInAClass(){
         int studentListFlag = 1;
+        int idStudentFlag=0;
         for (Student studentList : management.getStudents()) {
             System.out.println(studentList);
         }
+
         while (studentListFlag > 0) {
-            System.out.println("........................................................................................................");
-            System.out.println("Enter the student ID from the list:(Only numbers)");
-            Scanner studentFlag = new Scanner(System.in);
-            int idStudentFlag = studentFlag.nextInt();
-
-            if (getIdStudentExist(idStudentFlag)) {
+            try {
                 System.out.println("........................................................................................................");
-                System.out.println("List all the classes in which the student is included:");
-                getClassListWhereAStudentBelong(idStudentFlag);
-                studentListFlag = 0;
-            } else {
-                System.out.println("Sorry...That student ID doesn't exist");
-                studentListFlag = 1;
-            }
+                System.out.println("Enter the student ID from the list:(Only numbers)");
+                Scanner studentFlag = new Scanner(System.in);
+                idStudentFlag = studentFlag.nextInt();
 
+                if (getIdStudentExist(idStudentFlag)) {
+                    System.out.println("........................................................................................................");
+                    System.out.println("List all the classes in which the student is included:");
+                    getClassListWhereAStudentBelong(idStudentFlag);
+                    studentListFlag = 0;
+                }
+                else{
+                    System.out.println("Sorry...That student ID doesn't exist");
+                }
+            }
+            catch (InputMismatchException e){}
+            System.out.println("Please enter a valid value");
+            System.out.println("........................................................................................................");
         }
     }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FUNCTIONAL METHODS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -418,7 +461,6 @@ public class Functions {
         }
         return studentList;
     }
-
 
 }
 
